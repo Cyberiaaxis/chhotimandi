@@ -14,6 +14,6 @@ class HomeController extends Controller
 {
     public function __invoke()
     {
-        return view('Client.layouts.index');
+        return view('Client.pages.dashboard.index');
     }
 }
