@@ -88,7 +88,7 @@ class CartController extends Controller
         $cartItems = Cart::where('user_id', auth()->id())
             ->with('product')
             ->get();
-
-        return view('cart', compact('cartItems'));
+        // dd($cartItems);
+        return view('Client.pages.cart.index', compact('cartItems'));
     }
 }

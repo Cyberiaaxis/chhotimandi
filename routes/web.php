@@ -15,12 +15,14 @@ use Illuminate\Support\Facades\Route;
 // Public Routes
 Route::get('/', "HomeController");
 // Route::get('/', "UserController@index")->name('home');
-Route::get('/products', "ProductController@index")->name('products');
+Route::get('/products', "ProductController@index")->name('products.index');
 Route::get('/best-customers', "CustomerController@index")->name('best.customers');
 Route::get('/contact', "ContactController@index")->name('contact.index');
 Route::post('/contact', "ContactController@store")->name('contact.store');
 Route::get('/about', "AboutController@index")->name('about');
-
+Route::get('wishlist', 'WishlistController@index')->name('wishlist.index');
+Route::post('wishlist/{productId}/add', 'WishlistController@add')->name('wishlist.add');
+Route::delete('wishlist/{productId}/remove', 'WishlistController@remove')->name('wishlist.remove');
 // // Authentication Routes
 Route::get('/login', "LoginController@showLoginForm")->name('login');
 Route::post('/login', "LoginController@login")->name('login');
@@ -31,7 +33,8 @@ Route::post('/register', "UserController@createUser")->name('register');
 Route::post('/cart', "CartController@addToCart")->name("cart");
 Route::delete('/cart/{id}', "CartController@removeFromCart");
 Route::patch('/cart/{id}', "CartController@updateQuantity");
-Route::get('/cart', "CartController@viewCart");
+Route::get('/cart', "CartController@viewCart")->name("cart.index");
+// Route::get('/shop', "ShopController@index")->name("shop.index");
 
 
 // Protected User Routes (Requires Authentication)
