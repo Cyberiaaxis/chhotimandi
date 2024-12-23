@@ -17,6 +17,13 @@ use Illuminate\Support\Facades\Storage;
  */
 class ProductController extends Controller
 {
+
+    // public function customerIndex()
+    // {
+    //     $products = Product::with('category')->get();
+    //     return view('Client.pages.shop.index', compact('products'));
+    // }
+
     /**
      * Display a listing of all products.
      * 
@@ -27,13 +34,11 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::with('category')->get();
-        if (auth()->guest()) {
-            return view('Client.pages.shop.index', compact('products'));
-        }
-
-        return view('Staff.pages.product.index', compact('products'));
+        $products = Product::all();
+        return view('Client.pages.shop.index', compact('products'));
     }
+
+
 
     /**
      * Show the form for creating a new product.
@@ -93,6 +98,21 @@ class ProductController extends Controller
         return redirect()->route('admin.products.index')
             ->with('lastInsertedProduct', $product->id)
             ->with('success', 'Product created successfully!');
+    }
+
+    /**
+     * Display the specified product.
+     * 
+     * @param \App\Models\Product $product
+     * @return \Illuminate\View\View
+     */
+    public function show(Product $product)
+    {
+        // Eager load category relationship
+        $product->load('category');
+
+        // Pass product data to the view
+        return view('Client.pages.product.show', compact('product'));
     }
 
     /**

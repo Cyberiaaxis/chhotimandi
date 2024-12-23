@@ -34,7 +34,11 @@ Route::post('/cart', "CartController@addToCart")->name("cart");
 Route::delete('/cart/{id}', "CartController@removeFromCart");
 Route::patch('/cart/{id}', "CartController@updateQuantity");
 Route::get('/cart', "CartController@viewCart")->name("cart.index");
-// Route::get('/shop', "ShopController@index")->name("shop.index");
+Route::get('/checkout', "CheckoutController@index")->name('checkout.index');
+Route::post('/checkout', "CheckoutController:@process")->name('checkout.process');
+
+Route::get('/shop', "ShopController@categories")->name("shop.index");
+Route::post('/shop/products', 'ShopController@getProductsByCategory')->name('shop.getProductsByCategory');
 
 
 // Protected User Routes (Requires Authentication)
@@ -64,7 +68,8 @@ Route::middleware(['auth'])->group(
             Route::resource('discounts', "DiscountController");
             Route::resource('sliders', "SliderController");
         });
-        //         Route::resource('reservations', 'ReservationController');
+        // Route::get('categories', "CategoryController@index")->name('categories.index');
+        Route::get('/product/{product}', "ProductController@show")->name('product.show');
         Route::get('/product/{productId}/discount', "OrderController@getProductDiscount")->name('orders.getProductDiscount');
         Route::resource('shipping_addresses', "ShippingAddressController");
         Route::resource('billing_addresses', "BillingAddressController");
