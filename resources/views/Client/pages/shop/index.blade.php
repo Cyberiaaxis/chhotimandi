@@ -102,7 +102,7 @@
                                 console.log("product", product);
                                 // Create product container
                                 const productCol = document.createElement('div');
-                                productCol.className = 'col-md-6 col-lg-3 ftco-animate';
+                                productCol.className = 'col-md-6 col-lg-3 ftco-animate fadeInUp ftco-animated';
 
                                 const productDiv = document.createElement('div');
                                 productDiv.className = 'product';
