@@ -1,0 +1,392 @@
+/* Store Icon Styles */
+.store-icon i {
+    font-size: 2.5rem;
+    /* Set the icon size */
+    color: whitesmoke;
+    /* Default color of the icon */
+    transition: all 0.3s ease-in-out;
+    /* Smooth transition for all properties on hover */
+}
+
+/* Hover Effect for Store Icon */
+.store-icon i:hover {
+    transform: scale(1.2);
+    /* Slightly enlarge the icon when hovered */
+    color: #7a3f5f;
+    /* Change color on hover */
+}
+
+/* Keyframe Animation for Initial Bounce Effect */
+@keyframes bounce {
+    0% {
+        transform: translateY(0);
+        /* Start from the normal position */
+    }
+
+    30% {
+        transform: translateY(-10px);
+        /* Bounce up */
+    }
+
+    50% {
+        transform: translateY(0);
+        /* Back to normal */
+    }
+
+    70% {
+        transform: translateY(-5px);
+        /* Small second bounce */
+    }
+
+    100% {
+        transform: translateY(0);
+        /* Final position */
+    }
+}
+
+/* Apply Bounce Animation on Page Load */
+.store-icon i {
+    animation: bounce 1s ease-out;
+    /* 1-second duration for the bounce animation */
+}
+
+/* Cart Icon Styling */
+.header-cart-icon i {
+    font-size: 1.6rem;
+    /* Size of the cart icon */
+    transition: transform 0.3s ease, color 0.3s ease, filter 0.3s ease;
+    /* Smooth transitions for hover effects */
+}
+
+/* Hover Effect for Cart Icon */
+.header-cart-icon:hover {
+    background-color: #ffcc00;
+    /* Background color on hover */
+    color: #343a40;
+    /* Change icon color on hover */
+    transform: scale(1.15) rotate(15deg);
+    /* Scale up and rotate the icon */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    /* Shadow effect for the icon */
+}
+
+.header-cart-icon:hover i {
+    transform: rotate(15deg) scale(1.25);
+    /* Rotate and enlarge the icon */
+    filter: drop-shadow(0 0 10px rgba(255, 204, 0, 0.5));
+    /* Add a shadow effect to the icon */
+}
+
+/* Watchlist Icon Styling */
+.header-watchlist-icon i {
+    font-size: 1.6rem;
+    /* Size of the watchlist icon */
+    transition: transform 0.3s ease, color 0.3s ease, filter 0.3s ease;
+    /* Smooth transitions for hover effects */
+}
+
+/* Hover Effect for Watchlist Icon */
+.header-watchlist-icon:hover {
+    background-color: #ffcc00;
+    /* Background color on hover */
+    color: #343a40;
+    /* Change icon color on hover */
+    transform: scale(1.15) rotate(15deg);
+    /* Scale up and rotate the icon */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    /* Shadow effect for the icon */
+}
+
+.header-watchlist-icon:hover i {
+    transform: rotate(15deg) scale(1.25);
+    /* Rotate and enlarge the icon */
+    filter: drop-shadow(0 0 10px rgba(255, 204, 0, 0.5));
+    /* Add a shadow effect to the icon */
+}
+
+/* Profile Image Hover Effect */
+.header-profile-icon:hover .profile-img {
+    border: 3px solid #ffcc00;
+    /* Border color on hover */
+    transform: scale(1.1);
+    /* Slightly scale up the profile image */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    /* Shadow effect around the image */
+}
+
+/* Profile Image Styling (make it round) */
+.profile-img {
+    border-radius: 50%;
+    /* Make the profile image round */
+    transition: border 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    /* Smooth transitions for hover effects */
+    border: 3px solid transparent;
+    /* Default border is transparent */
+}
+
+/* Tooltip Customization */
+.tooltip-inner {
+    background-color: #343a40;
+    /* Dark background for tooltip */
+    color: #ffffff;
+    /* White text color for tooltip */
+    font-size: 1rem;
+    /* Font size */
+    padding: 0.5rem;
+    /* Padding for tooltip content */
+    border-radius: 5px;
+    /* Rounded corners */
+}
+
+.tooltip-arrow::before {
+    border-top-color: #343a40;
+    /* Same color as tooltip background for the arrow */
+}
+
+/* Navigation Menu (Product submenu) */
+.product-menu .nav-link {
+    padding: 10px 15px;
+    /* Padding around each menu item */
+    color: #7ca14a;
+    /* Default text color */
+    transition: background-color 0.3s, color 0.3s;
+    /* Smooth transition on hover */
+}
+
+.product-menu .nav-link:hover {
+    background-color: #431627;
+    /* Background color on hover */
+    color: #ffcc00;
+    /* Text color on hover */
+}
+
+.product-menu .nav-item {
+    position: relative;
+    /* Positioning context for dropdowns or other elements */
+}
+
+.product-menu .nav-item a {
+    font-size: 1.1rem;
+    /* Slightly larger text for menu items */
+}
+
+/* Sidebar (when collapsed) */
+#sidebar.collapsed+.content-area {
+    margin-left: 60px;
+    /* Adjust the content when sidebar is collapsed */
+}
+
+/* Smooth Transition for Sidebar and Content Area */
+.header-cart-icon i,
+.header-watchlist-icon i,
+.profile-img {
+    transition: all 0.3s ease-in-out;
+    /* Smooth transition for all icons and images */
+}
+
+/* Sidebar Styling */
+#sidebar {
+    width: 210px;
+    /* Default sidebar width */
+    transition: width 0.3s;
+    /* Smooth transition for width change */
+    border-right: 1px solid #0056b3;
+    /* Sidebar right border */
+    background-color: #343a40;
+    /* Sidebar background color */
+    color: white;
+    /* Sidebar text color */
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.5), inset -2px -2px 5px rgba(255, 255, 255, 0.1);
+    /* Inner shadow effect */
+    padding-top: 50px;
+    /* Top padding for the sidebar content */
+    position: fixed;
+    /* Fixed position for sidebar */
+    top: 50px;
+    /* Sidebar starts below the header */
+    left: 0;
+    height: calc(100vh - 70px);
+    /* Full height minus the header height */
+    z-index: 999;
+    /* Ensures sidebar stays on top */
+}
+
+#sidebar.collapsed {
+    width: 60px;
+    /* Sidebar width when collapsed */
+}
+
+/* Content Area Styling */
+.content-area {
+    padding: 20px;
+    /* Padding for content */
+    margin-left: 210px;
+    /* Default margin when sidebar is expanded */
+    margin-top: 70px;
+    /* Offset for the header */
+    margin-bottom: 70px;
+    /* Offset for the footer */
+    width: calc(100% - 210px);
+    /* Content area width minus the sidebar */
+    transition: width 0.3s ease, margin-left 0.3s ease;
+    /* Smooth transition on sidebar collapse */
+}
+
+#sidebar.collapsed+.content-area {
+    margin-left: 60px;
+    /* Adjust content when sidebar is collapsed */
+    width: calc(100% - 60px);
+    /* Adjust content width */
+}
+
+/* Application Bar (Header) Styling */
+.app-bar {
+    background-color: #343a40;
+    /* Dark background for the header */
+    color: #ffffff;
+    /* White text color */
+    padding: 10px 20px;
+    /* Padding around the header */
+    display: flex;
+    /* Flexbox for alignment */
+    justify-content: space-between;
+    /* Space between the header items */
+    align-items: center;
+    /* Align items vertically */
+    position: fixed;
+    /* Fixed header */
+    top: 0;
+    /* Stick to the top of the screen */
+    left: 0;
+    width: 100vw;
+    /* Full width of the viewport */
+    height: 50px;
+    /* Header height */
+    z-index: 1000;
+    /* Ensure header stays on top */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    /* Shadow under the header */
+}
+
+/* Footer Styling */
+.app-footer {
+    background-color: #343a40;
+    /* Dark background for the footer */
+    color: white;
+    /* White text color */
+    padding: 3px;
+    /* Small padding */
+    position: fixed;
+    /* Fixed footer */
+    bottom: 0;
+    /* Stick to the bottom */
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    /* Ensure footer stays on top */
+    text-align: center;
+    /* Center text */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
+    /* Shadow above the footer */
+}
+
+/* Navigation Link Styling */
+.nav-link {
+    display: flex;
+    align-items: center;
+    /* Vertically center the items */
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #f8f9fa;
+    /* Light color for the text */
+    transition: background-color 0.3s, color 0.3s;
+    /* Smooth transition on hover */
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    /* Hover background */
+    color: #ffcc00;
+    /* Change text color on hover */
+}
+
+/* Icon Text Styling */
+.icon {
+    width: 24px;
+    text-align: center;
+    /* Center the icon */
+}
+
+.text {
+    margin-left: 10px;
+    /* Space between icon and text */
+    transition: opacity 0.3s, visibility 0.3s;
+    /* Smooth transition for text visibility */
+}
+
+#sidebar.collapsed .text {
+    display: none;
+    /* Hide text when sidebar is collapsed */
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+    #sidebar {
+        position: absolute;
+        z-index: 1000;
+        height: 100%;
+        left: -250px;
+        /* Start the sidebar off-screen */
+        transition: left 0.3s;
+        /* Smooth slide-in effect */
+    }
+
+    #sidebar.show {
+        left: 0;
+        /* Slide sidebar into view */
+    }
+
+    .content-area {
+        margin-left: 0;
+        /* Full width of content */
+        width: 100%;
+        /* Full width on small screens */
+    }
+
+    .app-bar,
+    .app-footer {
+        position: fixed;
+        /* Fix the header and footer on mobile */
+        width: 100%;
+        left: 0;
+    }
+
+    .app-bar {
+        top: 0;
+        /* Fixed to the top */
+    }
+
+    .app-footer {
+        bottom: 0;
+        /* Fixed to the bottom */
+    }
+}
+
+/* General Header Icon Styling */
+.header-icon {
+    color: #ffffff;
+    /* White icon color */
+    padding: 0.5rem;
+    /* Padding around the icon */
+    border-radius: 50%;
+    /* Circular background for the icon */
+    display: flex;
+    /* Flexbox for centering */
+    align-items: center;
+    /* Center the icon */
+    justify-content: center;
+    /* Center the icon */
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    /* Relative position for tooltips */
+}

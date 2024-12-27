@@ -1,0 +1,15 @@
+        .registration-container {
+            max-width: 400px;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            /* White background for the form */
+            color: #333;
+            /* Dark text for form */
+        }
+
+        h2 {
+            color: #333;
+            /* Darker color for heading */
+        }

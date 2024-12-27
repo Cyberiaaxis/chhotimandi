@@ -1,0 +1,47 @@
+/* Custom Tooltip Colors */
+.tooltip-inner {
+    background-color: #6c757d !important;
+    /* Default gray */
+    color: white !important;
+}
+
+.tooltip.bs-tooltip-top .tooltip-arrow::before {
+    border-top-color: #6c757d !important;
+    /* Matches the background */
+}
+
+.tooltip-success .tooltip-inner {
+    background-color: #28a745 !important;
+    /* Green for Success */
+}
+
+.tooltip-success .tooltip-arrow::before {
+    border-top-color: #28a745 !important;
+}
+
+.tooltip-danger .tooltip-inner {
+    background-color: #dc3545 !important;
+    /* Red for Danger */
+}
+
+.tooltip-danger .tooltip-arrow::before {
+    border-top-color: #dc3545 !important;
+}
+
+.tooltip-info .tooltip-inner {
+    background-color: #17a2b8 !important;
+    /* Blue for Info */
+}
+
+.tooltip-info .tooltip-arrow::before {
+    border-top-color: #17a2b8 !important;
+}
+
+.tooltip-warning .tooltip-inner {
+    background-color: #ffc107 !important;
+    /* Yellow for Warning */
+}
+
+.tooltip-warning .tooltip-arrow::before {
+    border-top-color: #ffc107 !important;
+}

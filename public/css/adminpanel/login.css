@@ -1,0 +1,33 @@
+        body {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            /* Gradient background */
+            color: #fff;
+            /* Text color for contrast */
+            height: 100vh;
+            /* Full height for vertical centering */
+            width: 100vw;
+        }
+
+        .login-container {
+            max-width: 400px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            /* White background for the login box */
+        }
+
+        h2 {
+            color: #333;
+            /* Darker color for heading */
+        }
+
+        .alert {
+            margin-bottom: 20px;
+            /* Space between alert and form */
+        }
+
+        .footer-text {
+            color: black;
+            /* Change color for better visibility */
+        }

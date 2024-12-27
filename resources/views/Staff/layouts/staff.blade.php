@@ -8,15 +8,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Responsive design for mobile viewports -->
 
     <title>@yield('title', 'Staff Panel')</title> <!-- Dynamic title injection for each page -->
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/all.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/staff.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/about.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/home.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/products.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/registration.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/role.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/adminpanel/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/adminpanel/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/adminpanel/staff.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/adminpanel/about.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/adminpanel/login.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/adminpanel/home.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/adminpanel/products.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/adminpanel/registration.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/adminpanel/role.css') }}">
 
 </head>
 
@@ -67,10 +67,10 @@
     </footer>
     @endauth
 
-    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('js/adminpanel/bootstrap.bundle.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{ asset('js/staff.js') }}"></script>
+    <script src="{{ asset('js/adminpanel/app.js') }}"></script>
+    <script src="{{ asset('js/adminpanel/staff.js') }}"></script>
     <!-- <script src="{{ asset('js/product.js') }}"></script> -->
 
 </body>
