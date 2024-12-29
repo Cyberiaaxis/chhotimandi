@@ -6,36 +6,10 @@ use App\Models\Wishlist;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\JsonResponse;
 
 class WishlistController extends Controller
 {
-    // Add a product to the wishlist
-    public function add(Request $request, $productId)
-    {
-        $product = Product::find($productId);
-
-        if (!$product) {
-            return redirect()->back()->with('error', 'Product not found');
-        }
-
-        // Check if the product is already in the wishlist
-        $existingWishlistItem = Wishlist::where('user_id', Auth::id())
-            ->where('product_id', $product->id)
-            ->first();
-
-        if ($existingWishlistItem) {
-            return redirect()->back()->with('message', 'Product already in wishlist');
-        }
-
-        // Add product to the wishlist
-        Wishlist::create([
-            'user_id' => Auth::id(),
-            'product_id' => $product->id,
-        ]);
-
-        return redirect()->back()->with('message', 'Product added to wishlist');
-    }
-
     // Show the user's wishlist
     public function index()
     {
@@ -44,6 +18,22 @@ class WishlistController extends Controller
             ->get();
 
         return view('Client.pages.wishlist.index', compact('wishlists'));
+    }
+
+    public function addToWish(Product $product, Wishlist $wishlist): JsonResponse
+    {
+        $wishlistItem = $wishlist->updateOrCreate(
+            [
+                'user_id' => Auth::id(),
+                'product_id' => $product->id,
+            ]
+        );
+
+        $message = $wishlistItem->wasRecentlyCreated
+            ? 'Product added to wishlist successfully'
+            : 'Product is already in your wishlist';
+
+        return response()->json(['message' => $message], $wishlistItem->wasRecentlyCreated ? 201 : 200);
     }
 
     // Remove a product from the wishlist

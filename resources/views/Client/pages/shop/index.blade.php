@@ -7,7 +7,6 @@
     <h4 class="font-weight-bold">
         <span class="border-bottom border-danger text-danger">🛒 Market</span>
     </h4>
-
     <div class="container">
         <!-- Product Categories -->
         <div class="row justify-content-center">
@@ -66,10 +65,10 @@
                                     </form>
 
                                     <!-- Buy Now -->
-                                    <form action="#" method="POST" class="buy-now-form">
+                                    <form action="{{route('checkout.process')}}" method="POST" class="buy-now-form">
                                         @csrf
                                         <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                        <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1" onclick="submitForm(event, this, 'wishlist')">
+                                        <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
                                             <span><i class="ion-ios-cart"></i></span>
                                         </a>
                                     </form>
