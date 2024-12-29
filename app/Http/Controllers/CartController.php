@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cart;
+use App\Models\{Cart, Product};
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 /**
@@ -19,31 +20,23 @@ class CartController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function addToCart(Request $request): JsonResponse
+    public function addToCart(Product $product, Cart $cart): JsonResponse
     {
-        $request->validate([
-            'product_id' => 'required|exists:products,id',
-            'quantity' => 'required|integer|min:1',
-        ]);
-
-        $cartItem = Cart::where('user_id', auth()->id())
-            ->where('product_id', $request->product_id)
-            ->first();
-
-        if ($cartItem) {
-            // If the item already exists, update the quantity
-            $cartItem->increment('quantity', $request->quantity);
-        } else {
-            // Otherwise, create a new cart item
-            $cartItem = Cart::create([
+        // Now you have the full Product model instance injected, so use $product->id
+        // Use updateOrCreate to either update or create a cart item
+        $cartItem = $cart->updateOrCreate(
+            [
                 'user_id' => auth()->id(),
-                'product_id' => $request->product_id,
-                'quantity' => $request->quantity,
-            ]);
-        }
-
+                'product_id' => $product->id,  // Use the injected product instance
+            ],
+            [
+                'quantity' => DB::raw('quantity + ' . 1), // Increment quantity
+            ]
+        );
+        // Return the updated or created cart item as a JSON response
         return response()->json($cartItem);
     }
+
 
     /**
      * Remove an item from the cart.

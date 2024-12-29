@@ -16,7 +16,8 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
-
+    protected $table = 'products';
+    protected $primaryKey = 'id';
     /**
      * The attributes that are mass assignable.
      * 
@@ -33,6 +34,8 @@ class Product extends Model
         'category_id',   // Foreign key for the category the product belongs to
         'is_active'      // A flag indicating whether the product is active or not
     ];
+
+
 
     /**
      * Get the category that the product belongs to.

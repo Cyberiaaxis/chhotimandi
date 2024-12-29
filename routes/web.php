@@ -21,7 +21,7 @@ Route::get('/contact', "ContactController@index")->name('contact.index');
 Route::post('/contact', "ContactController@store")->name('contact.store');
 Route::get('/about', "AboutController@index")->name('about');
 Route::get('wishlist', 'WishlistController@index')->name('wishlist.index');
-Route::post('wishlist/{productId}/add', 'WishlistController@add')->name('wishlist.add');
+Route::get('wishlist/{product}/add', 'WishlistController@add')->name('wishlist.add');
 Route::delete('wishlist/{productId}/remove', 'WishlistController@remove')->name('wishlist.remove');
 // // Authentication Routes
 Route::get('/login', "LoginController@showLoginForm")->name('login');
@@ -30,7 +30,7 @@ Route::view('/showRegisterForm', 'Staff.pages.registration')->name('showRegister
 Route::post('/register', "UserController@createUser")->name('register');
 
 // // Cart Routes
-Route::post('/cart', "CartController@addToCart")->name("cart");
+Route::get('/cart/{product}/add', "CartController@addToCart")->name("cart.add");
 Route::delete('/cart/{id}', "CartController@removeFromCart");
 Route::patch('/cart/{id}', "CartController@updateQuantity");
 Route::get('/cart', "CartController@viewCart")->name("cart.index");
