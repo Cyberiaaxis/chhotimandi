@@ -92,11 +92,12 @@
 </section>
 
 <script>
-    document.addEventListener("DOMContentLoaded", (event) => {
+    var csrfToken = "{{ csrf_token() }}";
+    document.addEventListener("DOMContentLoaded", () => {
         const categoryLinks = document.querySelectorAll('.category-link');
 
-        categoryLinks.forEach(function(categoryLink) {
-            categoryLink.addEventListener('click', function(e) {
+        categoryLinks.forEach(categoryLink => {
+            categoryLink.addEventListener('click', e => {
                 e.preventDefault();
                 const categoryId = categoryLink.getAttribute('data-id');
 
@@ -113,46 +114,71 @@
                     .then(response => response.json())
                     .then(data => {
                         const productList = document.querySelector('#product-list .row');
-                        while (productList.firstChild) {
-                            productList.removeChild(productList.firstChild);
-                        }
-
-                        // Populate products
-                        if (data.products && data.products.length > 0) {
-                            data.products.forEach(product => {
-                                const productCol = document.createElement('div');
-                                productCol.className = 'col-md-6 col-lg-3 ftco-animate fadeInUp ftco-animated';
-                                const productDiv = document.createElement('div');
-                                productDiv.className = 'product';
-
-                                // Similar to above: Create image, discount, price, and actions
-                                // Add to Cart, Add to Wishlist, Buy Now forms
-                            });
-                        } else {
-                            const noProducts = document.createElement('p');
-                            noProducts.textContent = 'No products found for this category.';
-                            productList.appendChild(noProducts);
-                        }
+                        productList.innerHTML = ''; // Clear current product list
+                        var addToCartRoute = "{{ route('cart.add', 'XXX')}}";
+                        var addWishlistRoute = "{{ route('wishlist.add', 'XXX')}}";
+                        data.products.forEach(product => {
+                            const imagePath = "{{ asset('storage/images/') }}/" + product.image;
+                            productList.innerHTML += `
+                            <div class="col-md-6 col-lg-3 ftco-animate fadeInUp ftco-animated">
+                                <div class="product">
+                                    <a href="#" class="img-prod">
+                                        <img class="img-fluid w-50 h-50" src="${imagePath}" alt="${product.name}">
+                                        ${product.discounts ? `<span class="status">${product.discounts.value}%</span>` : ''}
+                                        <div class="overlay"></div>
+                                    </a>
+                                    <div class="text py-3 pb-4 px-3 text-center">
+                                        <h3><a href="#">${product.name}</a></h3>
+                                        <div class="d-flex">
+                                            <div class="pricing">
+                                                <p class="price">
+                                                    ${product.sale_price < product.price ? `<span class="mr-2 price-dc">${product.price}</span>` : ''}
+                                                    <span class="price-sale">${product.sale_price}</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="bottom-area d-flex px-3">
+                                            <div class="m-auto d-flex"> 
+                                                <form action="${addToCartRoute.replace('XXX', product.id)}" class="add-to-cart-form">
+                                                    <input type="hidden" name="_token" value="${csrfToken}">                                                               
+                                                    <a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center" onclick="submitForm(event, this, 'cart')">
+                                                        <span><i class="ion-ios-menu"></i></span>
+                                                    </a>
+                                                </form>
+                                                <a href="/checkout/process?product_id=${product.id}" class="buy-now d-flex justify-content-center align-items-center mx-1">
+                                                    <span><i class="ion-ios-cart"></i></span>
+                                                </a>
+                                                <form action="${addWishlistRoute.replace('XXX', product.id)}" class="add-to-cart-form">
+                                                    <input type="hidden" name="_token" value="${csrfToken}">
+                                                    <a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center" onclick="submitForm(event, this, 'wishlist')">
+                                                        <span><i class="ion-ios-heart"></i></span>
+                                                    </a>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`;
+                        });
                     })
                     .catch(error => {
-                        console.error('Error fetching products:', error);
+                        alert('Error fetching products');
+                        console.error('Error:', error);
                     });
             });
         });
     });
 
+
     function submitForm(event, element, type) {
         event.preventDefault(); // Prevent default anchor behavior
         const isLoggedIn = @json($isLoggedIn); // Check if the user is logged in
         const form = element.closest('form'); // Get the closest parent form of the clicked link
+        console.log("form", form);
         if (form) {
             if (isLoggedIn) {
-                // Determine the correct route based on the action type (cart or wishlist)
-                // const route = type === 'cart' ? "{{ route('cart.add', '__productId__') }}".replace('__productId__', data.product_id) : "{{ route('wishlist.add', '__productId__') }}".replace('__productId__', data.product_id);
-                const route = form.action;
-                console.log("form.action", form.action);
                 // Send the data via fetch
-                fetch(route, {
+                fetch(form.action, {
                         method: "GET",
                         headers: {
                             'Content-Type': 'application/json',
@@ -161,12 +187,9 @@
                     })
                     .then(response => response.json())
                     .then(data => {
-                        console.log("then(data", data);
-                        console.log(`${type.charAt(0).toUpperCase() + type.slice(1)} updated:`, data);
                         alert(data.message); // You can return a message from the controller
                     })
                     .catch(error => {
-                        // console.error(`Error adding to ${type}:`, error);
                         alert('There was an error.');
                     });
             } else {

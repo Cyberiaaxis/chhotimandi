@@ -84,10 +84,10 @@ class ShopController extends Controller
             } else {
                 $product->sale_price = $product->price;
             }
-
+            $product->sale_price = number_format($product->sale_price, 2, '.', '');
             return $product;
         });
-
+        // dd($products);
         // Check if the user is logged in
         $isLoggedIn = auth()->check();
 

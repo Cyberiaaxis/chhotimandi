@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\{Cart, Product};
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
@@ -34,7 +35,7 @@ class CartController extends Controller
             ]
         );
         // Return the updated or created cart item as a JSON response
-        return response()->json($cartItem);
+        return response()->json(['message' => 'Product added to cart successfully!']);
     }
 
 
