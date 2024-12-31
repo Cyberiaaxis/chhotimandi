@@ -59,7 +59,7 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request);
+        dd($request);
         // Define validation rules
         $rules = [
             'total_amount' => 'required|numeric|min:0',
@@ -223,6 +223,4 @@ class OrderController extends Controller
 
         return view('Staff.pages.order.stats', compact('stats'));
     }
-
-
 }

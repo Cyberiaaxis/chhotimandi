@@ -20,9 +20,7 @@ Route::get('/best-customers', "CustomerController@index")->name('best.customers'
 Route::get('/contact', "ContactController@index")->name('contact.index');
 Route::post('/contact', "ContactController@store")->name('contact.store');
 Route::get('/about', "AboutController@index")->name('about');
-Route::get('wishlist', 'WishlistController@index')->name('wishlist.index');
-Route::get('wishlist/{product}/add', 'WishlistController@addToWish')->name('wishlist.add');
-Route::delete('wishlist/{productId}/remove', 'WishlistController@remove')->name('wishlist.remove');
+
 // // Authentication Routes
 Route::get('/login', "LoginController@showLoginForm")->name('login');
 Route::post('/login', "LoginController@login")->name('login');
@@ -30,12 +28,7 @@ Route::view('/showRegisterForm', 'Staff.pages.registration')->name('showRegister
 Route::post('/register', "UserController@createUser")->name('register');
 
 // // Cart Routes
-Route::get('/cart/{product}/add', "CartController@addToCart")->name("cart.add");
-Route::delete('/cart/{id}', "CartController@removeFromCart");
-Route::patch('/cart/{id}', "CartController@updateQuantity");
-Route::get('/cart', "CartController@viewCart")->name("cart.index");
-Route::get('/checkout', "CheckoutController@index")->name('checkout.index');
-Route::post('/checkout', "CheckoutController:@process")->name('checkout.process');
+
 
 Route::get('/shop', "ShopController@categories")->name("shop.index");
 Route::post('/shop/products', 'ShopController@getProductsByCategory')->name('shop.getProductsByCategory');
@@ -44,14 +37,15 @@ Route::post('/shop/products', 'ShopController@getProductsByCategory')->name('sho
 // Protected User Routes (Requires Authentication)
 Route::middleware(['auth'])->group(
     function () {
-        // User Management Routes
-        // Route::prefix('users')->name('users.')->group(function () {
-        //     Route::get('/', "UserController@users")->name('index');
-        //     Route::get('{id}/edit', "UserController@edit")->name('edit');
-        //     Route::put('{id}', "UserController@update")->name('update');
-        //     Route::delete('{id}', "UserController@destroy")->name('destroy');
-        // });
-
+        Route::get('/cart/{product}/add', "CartController@addToCart")->name("cart.add");
+        Route::delete('/cart/{id}', "CartController@removeFromCart");
+        Route::patch('/cart/{id}', "CartController@updateQuantity");
+        Route::get('/cart', "CartController@viewCart")->name("cart.index");
+        Route::get('/checkout', "CheckoutController@index")->name('checkout.index');
+        Route::post('/checkout', "CheckoutController:@process")->name('checkout.process');
+        Route::get('wishlist', 'WishlistController@index')->name('wishlist.index');
+        Route::get('wishlist/{product}/add', 'WishlistController@addToWish')->name('wishlist.add');
+        Route::delete('wishlist/{productId}/remove', 'WishlistController@remove')->name('wishlist.remove');
         // Admin-Only Routes for Roles & Permissions
         Route::prefix('admin')->name('admin.')->group(function () {
             Route::resource('/dashboard', "DashboardController");

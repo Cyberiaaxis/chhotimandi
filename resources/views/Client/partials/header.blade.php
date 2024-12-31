@@ -33,9 +33,8 @@
                         <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Shop</a>
                         <div class="dropdown-menu" aria-labelledby="dropdown04">
                             <a class="dropdown-item" href="{{ route('shop.index') }}">Shop</a>
-                            <a class="dropdown-item" href="{{ route('wishlist.index') }}">Wishlist</a>
-                            <a class="dropdown-item" href="{{ route('cart.index') }}">Cart</a>
-                            <!-- <a class="dropdown-item" href="{{ route('checkout.index') }}">Checkout</a> -->
+                            <a class="dropdown-item" href="{{ route('wishlist.index') }}">My Wishlist</a>
+                            <a class="dropdown-item" href="{{ route('cart.index') }}">My Cart</a>
                         </div>
                     </li>
                     <li class="nav-item"><a href="about" class="nav-link">About</a></li>

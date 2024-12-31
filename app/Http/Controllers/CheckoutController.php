@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class CheckoutController extends Controller
@@ -11,13 +12,28 @@ class CheckoutController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Fetch cart details (for example, from session or database)
-        $cartItems = session()->get('cart', []);
+        // Get price and saleprice from the request
+        $price = $request->get('price');
+        $saleprice = $request->get('saleprice');
 
-        return view('Client.pages.checkout.index', compact('cartItems'));
+        // Validate that the price and saleprice are numeric and not zero
+        if (!is_numeric($price) || !is_numeric($saleprice) || $price == 0) {
+            // Handle invalid input: return an error message or a fallback value
+            return redirect()->back()->withErrors('Invalid price or sale price provided.');
+        }
+
+        // Calculate the percentage discount
+        $percentage = round((($price - $saleprice) / $price) * 100, 2);
+
+        // Calculate the discount amount (absolute difference between price and sale price)
+        $discountAmount = round($price - $saleprice, 2);
+
+        // Pass values to the view
+        return view('Client.pages.checkout.index', compact('percentage', 'discountAmount', 'price', 'saleprice'));
     }
+
 
     public function process(Request $request)
     {
@@ -91,6 +107,6 @@ class CheckoutController extends Controller
         $order->orderItems()->createMany($validatedData['order_items']);
 
         // Return a response or redirect
-        return redirect()->route('checkout.index')->with('success', 'Your order has been placed successfully!');
+        return redirect()->back()->with('success', 'Your order has been placed successfully!');
     }
 }

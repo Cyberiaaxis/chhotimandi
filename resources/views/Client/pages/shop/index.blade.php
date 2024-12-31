@@ -65,14 +65,9 @@
                                     </form>
 
                                     <!-- Buy Now -->
-                                    <form action="{{route('checkout.process')}}" method="POST" class="buy-now-form">
-                                        @csrf
-                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                        <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
-                                            <span><i class="ion-ios-cart"></i></span>
-                                        </a>
-                                    </form>
-
+                                    <a href="{{ route('checkout.index', ['id' => $product->id,'price' => $product->price, 'saleprice' => $product->sale_price]) }}" class="buy-now d-flex justify-content-center align-items-center mx-1">
+                                        <span><i class="ion-ios-cart"></i></span>
+                                    </a>
                                     <!-- Add to Favorites -->
                                     <form action="{{ route('wishlist.add', $product->id) }}" class="favorite-form">
                                         @csrf
@@ -115,8 +110,10 @@
                     .then(data => {
                         const productList = document.querySelector('#product-list .row');
                         productList.innerHTML = ''; // Clear current product list
-                        var addToCartRoute = "{{ route('cart.add', 'XXX')}}";
-                        var addWishlistRoute = "{{ route('wishlist.add', 'XXX')}}";
+                        let addToCartRoute = "{{ route('cart.add', 'XXX')}}";
+                        let addWishlistRoute = "{{ route('wishlist.add', 'XXX')}}";
+                        let addCheckoutRoute = "{{ route('checkout.index', ['id' => 'AAA', 'price' => 'XXX', 'saleprice' => 'YYY']) }}";
+
                         data.products.forEach(product => {
                             const imagePath = "{{ asset('storage/images/') }}/" + product.image;
                             productList.innerHTML += `
@@ -145,7 +142,7 @@
                                                         <span><i class="ion-ios-menu"></i></span>
                                                     </a>
                                                 </form>
-                                                <a href="/checkout/process?product_id=${product.id}" class="buy-now d-flex justify-content-center align-items-center mx-1">
+                                                <a href="${addCheckoutRoutereplace('AAA', product.id).replace('XXX', product.price).replace('YYY', product.sale_price)}" class="buy-now d-flex justify-content-center align-items-center mx-1">
                                                     <span><i class="ion-ios-cart"></i></span>
                                                 </a>
                                                 <form action="${addWishlistRoute.replace('XXX', product.id)}" class="add-to-cart-form">
