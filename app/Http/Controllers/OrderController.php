@@ -59,54 +59,30 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request);
-        // Define validation rules
-        $rules = [
-            'total_amount' => 'required|numeric|min:0',
-            'discount_amount' => 'nullable|numeric|min:0',
-            'final_amount' => 'required|numeric|min:0',
-            'order_items' => 'required|array|min:1',
-            'order_items.*.product_id' => 'required|integer|exists:products,id',
-            'order_items.*.quantity' => 'required|integer|min:1',
-            'order_items.*.discount_code' => 'nullable|string|max:50',
-
-            'billing.name' => 'required|string|max:255',
-            'billing.address' => 'required|string|max:255',
-            'billing.country' => 'required|string|max:100',
-            'billing.city' => 'required|string|max:100',
-            'billing.zip_code' => 'required|string|max:20',
-            'billing.contact_number' => 'required|string|max:20',
-            'billing.email' => 'required|email|max:255',
-
-            'shipping.name' => 'required_if:shipping_different,true|string|max:255',
-            'shipping.address' => 'required_if:shipping_different,true|string|max:255',
-            'shipping.country' => 'required_if:shipping_different,true|string|max:100',
-            'shipping.city' => 'required_if:shipping_different,true|string|max:100',
-            'shipping.zip_code' => 'required_if:shipping_different,true|string|max:20',
-            'shipping.contact_number' => 'required_if:shipping_different,true|string|max:20',
-
-            'payment_type' => 'required|in:cod,online',
-        ];
-
-        // Define custom error messages
-        $messages = [
-            'order_items.*.product_id.exists' => 'One or more products are invalid.',
-            'billing.email.email' => 'Please provide a valid email address.',
-            'shipping.name.required_if' => 'Shipping name is required when shipping to a different address.',
-        ];
-
-        try {
-            $validatedData = $request->validate($rules, $messages);
-            // Output the validated data
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            dd($e->errors()); // Output detailed validation error messages
-        }
-        // Combine country code and contact number for both billing and shipping
-        $validatedData['billing']['phone'] = $validatedData['billing']['country_code'] . '-' . $validatedData['billing']['contact_number'];
-        $validatedData['shipping']['phone'] = $validatedData['shipping']['country_code'] . '-' . $validatedData['shipping']['contact_number'];
-
-        // Assign billing email to shipping email
-        $validatedData['shipping']['email'] = $validatedData['billing']['email'];
+        // Validation
+        $validatedData = $request->validate([
+            'total_amount' => ['required', 'numeric', 'min:0'],
+            'discount_amount' => ['nullable', 'numeric', 'min:0'],
+            'final_amount' => ['required', 'numeric', 'min:0'],
+            'order_items' => ['required', 'array', 'min:1'],
+            'order_items.*.product_id' => ['required', 'integer', 'exists:products,id'],
+            'order_items.*.quantity' => ['required', 'integer', 'min:1'],
+            'order_items.*.discount_code' => ['nullable', 'string', 'max:50'],
+            'billing.name' => ['required', 'string', 'max:255'],
+            'billing.address' => ['required', 'string', 'max:255'],
+            'billing.country' => ['required', 'string', 'max:100'],
+            'billing.city' => ['required', 'string', 'max:100'],
+            'billing.zip_code' => ['required', 'string', 'max:20'],
+            'billing.contact_number' => ['required', 'string', 'max:20'],
+            'billing.email' => ['required', 'email', 'max:255'],
+            'shipping.name' => ['required_if:shipping_different,true', 'string', 'max:255'],
+            'shipping.address' => ['required_if:shipping_different,true', 'string', 'max:255'],
+            'shipping.country' => ['required_if:shipping_different,true', 'string', 'max:100'],
+            'shipping.city' => ['required_if:shipping_different,true', 'string', 'max:100'],
+            'shipping.zip_code' => ['required_if:shipping_different,true', 'string', 'max:20'],
+            'shipping.contact_number' => ['required_if:shipping_different,true', 'string', 'max:20'],
+            'payment_type' => ['required', 'in:cod,online'],
+        ]);
 
         // Create the order
         $order = Order::create([
@@ -117,27 +93,39 @@ class OrderController extends Controller
             'final_amount' => $validatedData['final_amount'],
             'payment_type' => $validatedData['payment_type'],
         ]);
-        // Generate a unique tracking number (can be based on the order ID or a unique identifier)
-        $validatedData['tracking_number'] = $trackingNumber = strtoupper(uniqid($order->id . '-', true));
 
+        // Generate a unique tracking number
+        $trackingNumber = strtoupper(uniqid($order->id . '-', true));
+
+        // Update the order with the tracking number
         $order->update([
             'tracking_number' => $trackingNumber,
         ]);
 
+        // Combine country code and contact number for both billing and shipping (if required)
+        $validatedData['billing']['phone'] = $validatedData['billing']['contact_number'];
+        if (isset($validatedData['shipping']['contact_number'])) {
+            $validatedData['shipping']['phone'] = $validatedData['shipping']['contact_number'];
+        }
+
+        // Assign billing email to shipping email (if necessary)
+        if (empty($validatedData['shipping']['email'])) {
+            $validatedData['shipping']['email'] = $validatedData['billing']['email'];
+        }
+
         // Insert billing and shipping data
         $order->billing()->create($validatedData['billing']);
-        $order->shipping()->create($validatedData['shipping']);
+        if (isset($validatedData['shipping']['name'])) {
+            $order->shipping()->create($validatedData['shipping']);
+        }
 
         // Insert order items
         $order->orderItems()->createMany($validatedData['order_items']);
 
         // Flash message to session and redirect
-        return redirect()->route('orders.index')->with('success', 'Order created successfully!');
-        // return response()->json([
-        //     'message' => 'Order created successfully!',
-        //     'order' => $order,
-        // ]);
+        return redirect()->back()->with('success', 'Order created successfully! Tracking Number: ' . $trackingNumber);
     }
+
 
 
 

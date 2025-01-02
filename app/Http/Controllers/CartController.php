@@ -23,9 +23,7 @@ class CartController extends Controller
      */
     public function addToCart(Product $product, Cart $cart): JsonResponse
     {
-        // Now you have the full Product model instance injected, so use $product->id
-        // Use updateOrCreate to either update or create a cart item
-        $cartItem = $cart->updateOrCreate(
+        $cart->updateOrCreate(
             [
                 'user_id' => auth()->id(),
                 'product_id' => $product->id,  // Use the injected product instance

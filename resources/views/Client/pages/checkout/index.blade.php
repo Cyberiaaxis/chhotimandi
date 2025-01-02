@@ -7,6 +7,28 @@
 <div class="ftco-animate text-center">
     <h1 class="mb-0 bread">Checkout</h1>
 </div>
+@if ($errors->any())
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Error!</strong>
+    <ul>
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
+
+@if (session('success'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>Success!</strong> {{ session('success') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
 
 <section class="ftco-section">
     <div class="container">
@@ -71,12 +93,6 @@
                             <div class="form-group">
                                 <label for="phone">Phone</label>
                                 <input type="text" name="billing[contact_number]" class="form-control" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="country_code">Country Code</label>
-                                <input type="text" name="billing[country_code]" class="form-control" required>
                             </div>
                         </div>
                         <div class="col-md-6">
