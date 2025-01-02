@@ -14,12 +14,14 @@ class CheckoutController extends Controller
      */
     public function index(Request $request)
     {
+
         // Get price and saleprice from the request
+        $id = $request->get('id');
         $price = $request->get('price');
         $saleprice = $request->get('saleprice');
 
         // Validate that the price and saleprice are numeric and not zero
-        if (!is_numeric($price) || !is_numeric($saleprice) || $price == 0) {
+        if (!is_numeric($id) || !is_numeric($price) || !is_numeric($saleprice) || $price == 0) {
             // Handle invalid input: return an error message or a fallback value
             return redirect()->back()->withErrors('Invalid price or sale price provided.');
         }
@@ -31,12 +33,13 @@ class CheckoutController extends Controller
         $discountAmount = round($price - $saleprice, 2);
 
         // Pass values to the view
-        return view('Client.pages.checkout.index', compact('percentage', 'discountAmount', 'price', 'saleprice'));
+        return view('Client.pages.checkout.index', compact('id', 'percentage', 'discountAmount', 'price', 'saleprice'));
     }
 
 
     public function process(Request $request)
     {
+        dd($request);
         // Validation rules
         $rules = [
             'total_amount' => 'required|numeric|min:0',

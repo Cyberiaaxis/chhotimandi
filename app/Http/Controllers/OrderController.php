@@ -59,7 +59,7 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
-        dd($request);
+        // dd($request);
         // Define validation rules
         $rules = [
             'total_amount' => 'required|numeric|min:0',
@@ -75,17 +75,15 @@ class OrderController extends Controller
             'billing.country' => 'required|string|max:100',
             'billing.city' => 'required|string|max:100',
             'billing.zip_code' => 'required|string|max:20',
-            'billing.country_code' => 'required|string|max:5',
             'billing.contact_number' => 'required|string|max:20',
             'billing.email' => 'required|email|max:255',
 
-            'shipping.name' => 'required|string|max:255',
-            'shipping.address' => 'required|string|max:255',
-            'shipping.country' => 'required|string|max:100',
-            'shipping.city' => 'required|string|max:100',
-            'shipping.zip_code' => 'required|string|max:20',
-            'shipping.country_code' => 'required|string|max:5',
-            'shipping.contact_number' => 'required|string|max:20',
+            'shipping.name' => 'required_if:shipping_different,true|string|max:255',
+            'shipping.address' => 'required_if:shipping_different,true|string|max:255',
+            'shipping.country' => 'required_if:shipping_different,true|string|max:100',
+            'shipping.city' => 'required_if:shipping_different,true|string|max:100',
+            'shipping.zip_code' => 'required_if:shipping_different,true|string|max:20',
+            'shipping.contact_number' => 'required_if:shipping_different,true|string|max:20',
 
             'payment_type' => 'required|in:cod,online',
         ];
@@ -94,11 +92,15 @@ class OrderController extends Controller
         $messages = [
             'order_items.*.product_id.exists' => 'One or more products are invalid.',
             'billing.email.email' => 'Please provide a valid email address.',
+            'shipping.name.required_if' => 'Shipping name is required when shipping to a different address.',
         ];
 
-        // Validate request data
-        $validatedData = $request->validate($rules, $messages);
-
+        try {
+            $validatedData = $request->validate($rules, $messages);
+            // Output the validated data
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            dd($e->errors()); // Output detailed validation error messages
+        }
         // Combine country code and contact number for both billing and shipping
         $validatedData['billing']['phone'] = $validatedData['billing']['country_code'] . '-' . $validatedData['billing']['contact_number'];
         $validatedData['shipping']['phone'] = $validatedData['shipping']['country_code'] . '-' . $validatedData['shipping']['contact_number'];

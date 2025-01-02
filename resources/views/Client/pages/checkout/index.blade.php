@@ -31,12 +31,7 @@
                             <div class="form-group">
                                 <label for="country">State / Country</label>
                                 <select name="billing[country]" class="form-control" required>
-                                    <option value="France">France</option>
-                                    <option value="Italy">Italy</option>
-                                    <option value="Philippines">Philippines</option>
-                                    <option value="South Korea">South Korea</option>
-                                    <option value="Hongkong">Hongkong</option>
-                                    <option value="Japan">Japan</option>
+                                    <option value="india">India</option>
                                 </select>
                             </div>
                         </div>
@@ -80,6 +75,12 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
+                                <label for="country_code">Country Code</label>
+                                <input type="text" name="billing[country_code]" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
                                 <label for="emailaddress">Email Address</label>
                                 <input type="email" name="billing[email]" class="form-control" required>
                             </div>
@@ -96,7 +97,6 @@
                             </div>
                         </div>
                     </div>
-
                     <!-- Shipping Address (if different) -->
                     <div id="shipping-address" style="display: none;">
                         <h3 class="mb-4 billing-heading">Shipping Address</h3>
@@ -104,13 +104,13 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="shipping_name">Full Name</label>
-                                    <input type="text" name="shipping[name]" class="form-control" required>
+                                    <input type="text" name="shipping[name]" class="form-control" required disabled>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="shipping_phone">Phone</label>
-                                    <input type="text" name="shipping[contact_number]" class="form-control" required>
+                                    <input type="text" name="shipping[contact_number]" class="form-control" required disabled>
                                 </div>
                             </div>
 
@@ -119,13 +119,8 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="shipping_country">State / Country</label>
-                                    <select name="shipping[country]" class="form-control" required>
-                                        <option value="France">France</option>
-                                        <option value="Italy">Italy</option>
-                                        <option value="Philippines">Philippines</option>
-                                        <option value="South Korea">South Korea</option>
-                                        <option value="Hongkong">Hongkong</option>
-                                        <option value="Japan">Japan</option>
+                                    <select name="shipping[country]" class="form-control" required disabled>
+                                        <option value="India">India</option>
                                     </select>
                                 </div>
                             </div>
@@ -135,25 +130,25 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="shipping_address">Street Address</label>
-                                    <input type="text" name="shipping[address]" class="form-control" placeholder="House number and street name" required>
+                                    <input type="text" name="shipping[address]" class="form-control" placeholder="House number and street name" required disabled>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <input type="text" name="shipping[apartment]" class="form-control" placeholder="Apartment, suite, unit etc: (optional)">
+                                    <input type="text" name="shipping[apartment]" class="form-control" placeholder="Apartment, suite, unit etc: (optional)" disabled>
                                 </div>
                             </div>
                             <div class="w-100"></div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="shipping_city">Town / City</label>
-                                    <input type="text" name="shipping[city]" class="form-control" required>
+                                    <input type="text" name="shipping[city]" class="form-control" required disabled>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="shipping_zip_code">Postcode / ZIP *</label>
-                                    <input type="text" name="shipping[zip_code]" class="form-control" required>
+                                    <input type="text" name="shipping[zip_code]" class="form-control" required disabled>
                                 </div>
                             </div>
                         </div>
@@ -173,7 +168,8 @@
                         <p class="d-flex justify-content-between">
                             <span>Subtotal</span>
                             <span>${{ number_format($price, 2) }}</span>
-                            <input type="hidden" name="price" value="{{ $price }}">
+                            <input type="hidden" name="total_amount" value="{{ $price }}">
+
                         </p>
 
                         <p class="d-flex justify-content-between">
@@ -185,7 +181,9 @@
                         <p class="d-flex justify-content-between">
                             <span>Discount</span>
                             <span>${{ number_format($discountAmount, 2) }}</span>
-                            <input type="hidden" name="discountAmount" value="{{ $discountAmount }}">
+                            <input type="hidden" name="discount_amount" value="{{ $discountAmount }}">
+                            <input type="hidden" name="order_items[0][product_id]" value="{{ $id }}">
+                            <input type="hidden" name="order_items[0][quantity]" value="1">
                         </p>
 
                         <hr>
@@ -193,7 +191,7 @@
                         <p class="d-flex justify-content-between total-price">
                             <span>Total</span>
                             <span>${{ number_format($saleprice, 2) }}</span>
-                            <input type="hidden" name="saleprice" value="{{ $saleprice }}">
+                            <input type="hidden" name="final_amount" value="{{ $saleprice }}">
                         </p>
                     </div>
 
@@ -253,16 +251,48 @@
 </section>
 
 <script>
-    // Vanilla JS to toggle the visibility of the shipping address form
-    const shippingDifferentRadio = document.getElementById('shipping_different');
-    const shippingAddressSection = document.getElementById('shipping-address');
+    document.getElementById('shipping_different').addEventListener('change', function() {
+        const shippingAddressDiv = document.getElementById('shipping-address');
+        const shippingFields = [
+            'shipping[name]',
+            'shipping[contact_number]',
+            'shipping[address]',
+            'shipping[city]',
+            'shipping[zip_code]',
+            'shipping[country]',
+            'shipping[apartment]'
+        ];
 
-    function toggleShippingAddress() {
-        shippingAddressSection.style.display = shippingDifferentRadio.checked ? 'block' : 'none';
+        if (this.checked) {
+            // Show shipping address
+            shippingAddressDiv.style.display = 'block';
+            // Enable shipping fields and make them required
+            enableShippingValidation(true, shippingFields);
+        } else {
+            // Hide shipping address
+            shippingAddressDiv.style.display = 'none';
+            // Disable shipping fields and remove 'required' attribute
+            enableShippingValidation(false, shippingFields);
+        }
+    });
+
+    function enableShippingValidation(enable, fields) {
+        fields.forEach(function(fieldName) {
+            const field = document.querySelector(`[name="${fieldName}"]`);
+            if (field) {
+                if (enable) {
+                    // Enable and mark as required
+                    field.removeAttribute('disabled');
+                    field.setAttribute('required', 'true');
+                } else {
+                    // Disable the field and remove the required attribute
+                    field.setAttribute('disabled', 'true');
+                    field.removeAttribute('required');
+                }
+            }
+        });
     }
-
-    window.onload = toggleShippingAddress;
-    shippingDifferentRadio.addEventListener('change', toggleShippingAddress);
 </script>
+
 
 @endsection
